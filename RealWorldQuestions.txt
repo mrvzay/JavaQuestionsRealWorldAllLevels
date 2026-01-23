@@ -1,0 +1,963 @@
+How can you make an immutable class in java ?
+What happens if one of its fields in mutable like List or Date ?
+
+What happens if the main thread dies but other threads are still running ?
+
+How would you handle a database connection failure in your code ?
+
+Differentiate between HashMap, LinkedHashMap and TreeMap ?
+How does HashMap handle collisions internally ?
+What happens when many keys end up in the same bucket ?
+What is ConcurrentHashMap and how is it different from a synchronized map ?
+You have 1 million records - how would you efficiently remove duplicates ?
+What happens if you modify a list while iterating over it ?
+
+When would you prefer ReentrantLock over synchronized ?
+What is the difference between wait(), sleep(), and yield() ?
+
+How can you make a thread-safe singleton ?
+
+You have 3 threads that must run in order (T1 -> T2 -> T3). How will you achieve that ?
+What happens if one thread throws an unchecked exception in an executors service ?
+
+Explain the flow when a REST request hits a Spring Boot annotation ?
+What is the dependency injection and how does Spring Boot implement it ?
+You have two beans of the same type - how will Spring decide which one to inject ?
+What's the difference between @ReqeustScope, @SessionScope, and @Prototype scope beans ?
+How do you handle exceptions globally in Spring Boot ?
+How would you return a custom error response structure ?
+
+What is @Transactional and what happens if you call a transactional method from a non-transactional one ?
+
+How do two microservices communicate with each other ?
+When would you use synchronous vs asynchronous communication ?
+About Circuit Breaker Pattern and how does it helps ?
+
+Coding questions :
+Group employees by department by using streams.
+Print numbers 1 to 10 using two threads alternately (odd-even printing).
+
+
+Java 8:
+
+Can you explain how you would handle an exception inside a stream pipeline ? And how would you prevent that from breaking the stream exception ?
+So let's say if you want to sort a list of employees by department and then by salary in descending order. So which functional interface you could use ? ( Comparable and Comparator and which one you use here ? ).
+So is it good idea to use optional inside entity classes or DIO s you use ?
+So tell me how does the java stream api process data internally ?
+If you're designing a custom operation to be passed to multiple utility methods. How can a functional interface help, and how would you use a lambda expression here ?
+Explanation is the usage and returns types of various stream operations (Collect, filter) ?
+When to use flatMap, map and filter ?
+How to implement the coding questions logic without streams(pure Java)
+Inbuilt functional interfaces (Predicate, Supplier, Consumer) ?
+Creating and using custom functional interface (e.g., custom predicate) ?
+Java 8 Time / Date API (changes, immutability, calculating data differences) ?
+Functional interface and predefined functional interfaces ?
+Can lambdas be used with normal interface, and why ?
+Functional interfaces: Purpose, existing functional interfaces (Runnable, Callable etc ) ?
+Default and Static methods in interfaces : Purpose of default and static methods ?
+Custom Functional interface : creating a custom predicate ?
+Streams: Filter, forEach, Predicate, Consumer, Supplier ?
+Comparator vs Comparable : Methods, natural sorting order, and implementation ?
+Future vs CompletableFuture: Differences and reason for introducing ComplatableFuture ?
+Including CompletableFuture and how to handle exceptions ?
+Java 8 futures : Changes to memory management and completable future ?
+
+
+Collections :
+
+HashMap is not synchronized, but what issues might arise in a multi-threaded environment when using a HashMap, and how would you address them ?
+What's the initial size of Hashtable ?
+Suppose you know the initial size of the Hashtable, and you're performing several 'put' operations. How does the capacity of the Hashtable change, and what is the importance of the load factor ?
+Can you explain map compute is absent ?
+What happens if two threads update the same key in concurrent hashamap ?
+HashMap: Internal workings, value overriding/fetching, hash collisions, initial size, and different between HashMap, ConcurrentHashMap, and SynchronizedHashMap ?
+Hoe does a HashSet ensures uniqueness internally ?
+What happens if you don't override hashCode() properly ?
+Difference between ArrayList and CopyOnWriteArrayList ?
+When would you prefer CopyOnWriteArrayList ?
+What's the difference between fail-fast and fail-safe iterators ?
+Which collections are fail-safe ?
+Difference between synchronized and concurrent HashMap ?
+Fail-fast vs. Fail-safe iterators ?
+In-depth questions about HashMap (Internal working, hashcode calculation, value overriding, collision, time complexity) ?
+TreeMap internal working ?
+TreeSet and HashSet internal working ?
+
+
+Multi-threading :
+
+About the different states of a threads in java ?
+If you're writing a file from multiple threads simultaneously. What synchronization techniques can you apply to ensure thread-safe behavior ?
+About a deadlock ? How can you avoid it ?
+About a race condition and how can it prevented ?
+If you're using an ExecutorsService to manage multiple threads in a web application. How would you handle the scenarios when the task execution time exceeds the expected time, and how would you stop the threads ?
+Explain the difference between the synchronized keyword and re-entrant lock interface ?
+Why we call it re-entrant lock ?
+So tell me which scenarios would you prefer re-entrant lock over synchronized ?
+So tell me we can do fair ordering by using re-entrant locking right ?, but we cannot do in the synchronize by using synchronized keyword. So what does this mean fair ordering ?
+
+So tell me what makes a class thread safe ?
+So how volatile keyword is different from synchronized ?
+
+Let's say your multi-threaded application shows inconsistent values even though all fields are private. So what would be the reason ?
+Let's say you want to ensure only one instance of a class exist even in a multi-threaded environment. So how would you do that ?
+What happens if two threads simultaneously call print statement ?, System.out.println ?
+Can you explain different states in thread life cycle ?
+Can you tell me the difference between runnable and callable ?, And when would use one on other ?
+Suppose two threads updating shared counter updates, How would using threads safety without using synchronization ?
+Can tell me how does volatile visibility ?
+Automic varialbes and synchronization difference performance ?
+Can thread aquire multiple locks ?
+aquiring ordering across threads inconsistency ?
+What happens if you start a thread twice ?
+What's the output of calling run() instead of start() ?
+How would you get a return value from a thread ?
+How does ThreadPoolExecutor manage threads internally ?
+What happens if all threads are busy ?
+You have 100 tasks, but only 10 threads available - how will you execute all efficiently ?
+What is the volatile keyword and how is it different from synchronized ?
+Explain the CompletableFuture class and give a real-world use case ?
+Fork-Join pool in threads pools ?
+Thread pool used by parallel streams ?
+CompletableFuture (What it is, how to use it instead of threads) ?
+How to decide thread pool size ?
+Threads : wait, notify, notifyAll, sleep, interrupted exceptions, and join ?
+Synchronized : Usage at different levels (class, block, method, variable) and scenarios for its use ?
+Object creation count: Logic to return the number of items an object is created in a mulit-threaded environment ?
+
+Serialize & Deserialize :
+
+
+Can you explain what happens when you try to serialize an object that contains non-serializable fields ? How would you handle that situation ?
+You're building a distributed system where data is being transferred across multiple machines. How would you serialize and deserialize objects efficiently, and what are the potential challenges ?
+About are transient fields in java ?
+If you mark a field as transient in a serializable class. What happens when the object is deserialized ? How do you handle restoring that field ?
+Serialization vs Deserialization in java ?
+Problems with serialization / deserialization ?
+JEP 290 (serialization / deserialization filter ) ?
+Forgery attacks in serialization and how to avoid them ?
+Synchronization: What it is and different levels of synchronization ?
+Serialization and Deserialization ?
+Serialization / Deserialization : purpose and disadvantages ?
+
+
+Strings :
+
+If Strings are immutable, what happens when you perform a concatenation operations like str1 + str2 ? Can you explain how it works under the hood ?
+When should i use StringBuilder and String ?
+What would be the issue if a string were immutable ?
+
+
+OOPS :
+
+Can you think of a situation where polymorphism might lead to can issue, such as in a scenario with overridden methods ? How would you resolve it ?
+So what happens if subclass defines a method with the same signature as a private method ?
+So can you create a private interface in java ?
+Different ways to create an object in Java ?
+What happens if a class doesn't have a default constructor ?
+Explain the class loading process in Java ?
+Can a class be loaded twice ?
+Abstract classes ?
+Encapsulations and its purpose ?
+Other OOPS concepts ?
+Sealed classes or records ?
+OOPS concepts : Explanation of OOPS concepts, completable future, and  exception handling ?
+association, Aggregation, Composition : Differences, weak vs tight coupling, and behavior upon parent deletion ?
+Shallow vs Deep copy differences ?
+
+
+Design pattern :
+
+Design patterns (Singleton, Property, Abstract Factory, Factory, Builder) ?
+Singleton pattern:
+What it is, how to break it, real-time usage, and how to make a class thread-safe ?
+Real-time usage of Singleton and Prototype design patterns ?
+If a Singleton class is extended, does it break the pattern ?
+Singleton class : Writing and demonstrating a Singleton class, ways to break it, and double-lock synchronization ?
+
+What is the Builder Pattern in Java? How is it different from the Factory Pattern?
+
+ANS : “Builder pattern is about constructing complex objects step by step with optional parameters.
+Factory pattern is about object creation based on type or condition, hiding the instantiation logic from the client.”
+
+Memory :
+
+How static variables stores in memory and how instance variable stores in memory ?
+If you notice GC is taking up significant time in production. How would you analyze GC logs and tune the JVM for better performance ?
+How does java handle memory leaks even though is has garbage collection ?
+
+Garbage collections:
+
+Scenarios of object eligibility for garbage collections ?
+Different types of garbage collectors ?
+Garbage collections algorithms used in java 8 and later versions ?
+
+
+Exceptions :
+
+What will happen if you call system.exist() inside try block ?
+Can a finally block return the modify value of the method ?
+What happens if a thread throws an unchecked exception ?
+Can you handle uncaught exceptions in threads ?
+If a method has both try catch, and finally, and try block returns a value - which value is finally returned ?
+Try-with-resources (What it is, alternatives, how it works ) ?
+
+
+Immutable classes :
+
+So is it possible to make an immutable class with immutable fields inside ?
+
+Marker Interface :
+
+Usage, purpose, and examples of built-in marker interfaces in Java ?
+
+What is JEP 290 ?
+What is jdk.serial.fitler ?
+What is the fundamental problem and how java 9 addresses it ?
+
+
+If your application is running out of memory, how would you debug in java ? and which jvm paramters would you tune actually ?
+
+Can we make a null references call a static methods in Java ?
+
+What is Java lockings ?
+What is double check lock ?
+
+Can you explain this keyword inside lambda and anonymous inner class differently ?
+Tell me java date and time api better than older calendar api in java ?
+Can Enums implements in interfaces ? if no and why ?
+Your working test cases, What happened test class not public ?
+
+
+Can you give an example where violating the Open/Closed principle leads to bugs ?
+About elastic search and how it is searching internally ?
+About default mapping type ?
+About default type keyword or text ?
+What is liquibase ?
+Can violating the open-close principle (OCP) still be beneficial in certain situations ?
+
+===========================================================================================
+
+SOLID principles with examples ?
+SOLID principles with real-time examples ?
+
+CODING QUESTION :
+
+Implement you own Singleton class (thread-safe) & then asked to implement an LRC Cache using LinkedHashMap.
+Get a list of employee names who earn above the average salary.
+Create a map with employee ID as key and name as value.
+Get the highest salary by department.
+Count the occurrences of each character in a string (pure java, no streams).
+Given a list of transactions (each with a list of items), count the items with an amount less than 50 (focus on using flatMap and count) ?
+Calculate the number of days between two dates (dd/mm/yyyy format) without using any internal date/time libraries (pure java 7).
+Extract Strings ending with ".xls" using java 8 streams.
+Filer even numbers from a list and multiply them by 2.
+CODING QUESTION : String manipulation: Finding the second non-repeated character in a string using streams and LinkedHashMap ?
+
+CONDING QUESTION : Streams (Advanced) : Finding the fourth-highest salary from a list of employees ?
+
+CODING QUESTIONS :
+Write a program create an object of student class having id, name, marks. Sort by marks by using streams ?
+Print the palindromic strings from the list of string by using stream so I'll provide the solution links of this question the description below ?
+
+CODING QUESTIONS :
+
+Write a program sum of list by using streams.
+Print first non repeating number from a list by using streams.
+
+You are give a list of sorting and you have to calculate the frequency of string by using streams API ?
+Sort employee object based an age by using stream API ?
+Write code using stream API to sort list of String based on as length ?
+Merge two unsorted arrays and print the merged one in sorted way by using stream API ?
+Get a list of employees names who earn above the average salary ?
+Count the occurrence of each character in a string (pure java and streams) ?
+Crate a Map with employee ID as key and names as value?
+Get the highest salary by department ?
+Given a list of transactions (each with a list of items), count the items with an amount less then 50 (focus on using flatMap and count ) ? (Streams and Pure Java )
+Write java code to find fist non repeated character using java streams API ?
+Write a stream API code to find the sequence of numbers ?
+
+Counting with most water ?
+Calculate the number of days between two days (dd/mm/yyyy) without using an internal date / time libraries (Pure Java 7) ?
+Write a code of circuit breaker pattern ?
+
+You are given a LinkedList and you have to reordered the LinkedList ?
+Write java code of find the largest continues sequence in an array which sums to zero ?
+Write a java code reverse singly linkedlist ?
+Write a java program to check whether a given mathematical equation is valid. The equation may contain numbers, +,-,*,/, and parentheses(). Return true if the equation is valid and false otherwise. ?
+Design a java program to simulate a vending machine that dispenses items based on user input. The machine should accept coins, check the balance, and dispense the selected item if sufficient funds are provided ?
+Find the sum of all odd numbers from a List<Integer> by using stream api in java ?
+
+CODING QUESTIONS:
+
+You are given a list of string, You have to find the longest words in a list by using stream api ?
+You have an integer of list of numbers, how have to find out highest top 3 highest numbers using streams ?
+You have given a integer, you have to find duplicate integers in list using streams ?
+
+
+For example youtube live views count how to design api (how many times api hit how to store)  in spring boot or java ?
+
+SQL & JPA & DATABASE :
+
+SQL: JPA, custom queries, native queries, procedures, triggers, functions, GROUP BY, HAVING LIKE ?
+SQL :
+Find the second-highest salary from an employee table ?
+Given two tables (customers and orders), find customers who have made zero orders ?
+SQL query to swap "Male" and "Female" in a gender columns ?
+Design a REST API to construct SQL queries based on the input language ?
+
+Database ACID Properties: Explanation of each property ?
+
+JPA :
+
+How do you handle pagination in Spring Data JPA ?
+What's the difference between save and save flush in spring boot data JPA ?
+How would you design bulk data processing efficiently ?
+What's the difference between one to many and many to many annotations ?
+Give me a real word use case many to many annotation ?
+How you implemented pagination and sorting in spring data JPA ?
+How do you implement soft delete and spring data JAP ?
+Jap setup , completely steps end to end ? how to approach ?
+Spring boot JPA entire process ?
+So how do you implement pagination and sorting efficiently in jpa for millions of records ?
+
+
+SQL :
+
+Index, Stored procedures, ACID primary key
+Triggers and normalization ?
+Why search with primary keys work further ?
+About EXITSTS and how its is used ?
+The make limit of varchar and difference between byte & char ?
+Difference between 2NF & 3NF ?
+What are the clustered and non-clustered indexes ?
+
+SQL QUERY:
+
+Find the minimum salary of employee of same city ?
+Find some of all the employees salary based on the department ?
+Find the 2nd highest salary of the employees ?
+Indexes in DB and their disadvantages ?
+Drop, Delete and truncate ?
+Forenkey and stored procedure ?
+Write a query to find top 10 employees details having salary greater then average salary of employees from company ?
+Find the second-height salary from an employee table ?
+Given two tables (Customers and orders) find customers who have made zero orders ?
+Query to swap "male" and "Female" in gender columns ?
+Write an SQL query of count duplicates values in a column ?
+
+SQL QUEARY:
+
+SQL Query to find the 2nd, 3rd and 4th highest salary from the employee table ?
+
+Find the average salary of each country from the Employee list ?
+
+Transactions:
+
+So can you explain transactional annotation and what happens if an exceptions occur inside a transactional method ?
+How does propagation behavior affect nested transactions ?
+Transactional annotation in side prograpation ?
+
+
+About DIOs and why are they used ?
+If your controller is exposing entity objects directly to clients. What risks does this have, and how do DTOs solve that problem ?
+
+How do you optimize a slow SQL query ?
+
+What is the N+1 select problem and how do you solve it ?
+
+How do you perform pagination and sorting in Spring Data JAP ?
+How do transactions work in spring ?
+How to connect 2 tables in hibernate. Give annotation for that To connect two table in Hibernate ?
+Write a java program to perform some operations and a binary search tree.
+ 	1. insert a node,
+ 	2. Delete a node,
+ 	3. Find the minimum and maximum elements
+ 	4. Perform an in-order traversal.
+Difference between SQL AND NoSQL ?
+Write a SQL query to find the total amount spent by each customer ?
+
+What is the N+1 select problem and how do you solve it ?
+
+What annotations are configuration do you use to work with multiple databases in your project ?
+What security parameters do you check while working with multiple databases ?
+Difference between a schema and a database and Where do we create and store tables ?
+
+
+JUNIT TESTING :
+
+JUnit: Mocking static methods, private methods, disadvantages of PowerMockito, usage of Mockito, verify, times, never invoked, any time invoked with any parameter, return, assertions ?
+..... mocking static/private methods, asserting exceptions (including messages), and basic JUnit annotations/concepts ?
+
+J-unit :
+
+What is @inject mocks ( rules )
+Mockito .mock is difference between @mock
+Verify when is used, which scenario is used ?
+What is times (Verify inside times ) ?
+
+Junit 4 vs Junit5 differences ?
+Integretation test and unit test differences ?
+Mockito and power mockito ?
+What is the spy ?, what is the need to create spy, and why ?
+How to mock private methods ?
+@Inject mocks what is it ?
+Assertion, Assertation that ?
+
+Maven/griddle JUnit - unit testing, Sonarq.
+Mock and inject mock and how can we mock static method, how to mock final method & mock private methods, verify mock calls; how to assert exception, what is verify and time.
+
+
+TESTING ( J-UNIT ) :
+
+JUNIT ( making static methods, private methods, disadvantages of power Mockito, using of Mockito, verify times, never invoked, any time invoked with any parameters, return, assertions ) ?
+
+Spring boot how to write JUNITS ?
+Integer test and unit test ?
+Private methods stubs in testing ?
+JUNIT 4 vs JUNIT 5 differences ?
+
+JUNIT : Mocking static / private methods, asserting exceptions (including messages) and basic Junit annotations concepts ?
+Difference between junit4 and juni5 ?
+
+Spring Boot :
+
+Filters and interceptors (purpose, return type, custom creation, differences) ?
+Spring Boot project flow ?
+Spring :
+Dependency Injection (types, why constructor injection is preferred) ?
+
+Build a REST API to store employees using Spring Boot ? :
+Includes writing the controllers, services layers, and repository ?
+Also covers Spring Boot Project structure and dependencies ?
+Implement a filter in a Spring Boot Project ?
+Rate Limiter: What it is and how to implement it ?
+Scopes of a bean :
+Different scopes and real-time examples of when to use each ?
+
+
+Spring Boot application flow ?
+Request flow from hit to response (DispatcherServlet, filters, interceptors, controllers, services, repositories) ?
+Interceptor methods (preHandle, postHandle, afterCompletion) ?
+Filter chain ?
+Authentication and Authorization ?
+Basic auth, OAuth, JWT ?
+JWT format (header, payload, signature) ?
+Claims in JWT payload (audience, primary audience, secondary audience, scopes ) ?
+How to use JWT and OAuth in microservices ?
+Spring Annotations :
+@Autowired, @Resource, @Inject, @Component ?
+Downsides of @Autowired and @Resource ?
+When to use each annotation ?
+
+Password rotation and encryption policies ?
+OAuth :
+What it is, 2-legged vs 3-legged, public/private keys, JWT, certificate expiry, etc ?
+Spring Boot flow :
+Filter, interceptor, controller, service, repository, DTOs, etc ?
+Where to put authentication / authorization ?
+Are WebLogic and Tomcat servers single-threaded or multi-threaded ?
+
+What is Actuator :
+Its purpose and how it's used for health checks ?
+REST APIs : PUT vs POST, idempotent vs non-idempotent methods, and differences between PUT and PATCH ?
+@Transactonal : Purpose, different transactions levels, and handling transactions in microservices ?
+Custom Authentication : implementing custom authentication and extracting/validating values form request headers ?
+
+Disabling Tomcat: How to disable Tomcat in Spring Boot Project ?
+Controller vs RestController : Return types, JSp vs JSON and scenarios for white-level error pages ?
+API performance improvements : Strategies for improving API performance ?
+Map Soring: Soring a map based on keys using streams ?
+Transactional (Advanced) : Different types of transactions and their purposes ?
+Isolation levels : Different types of isolation levels ?
+
+Spring Cloud config server: Purpose and integration with a Spring Boot application ?
+REST APIs (Advanced) : idempotent vs non-idempotent methods, Spring Boot annotations for different operations, and structuring endpoints ?
+What happens behind the scenes when a Spring Boot app starts ?
+How does auto-configuration work internally ?
+What are the Spring Boot starters and how do they simplify configuration ?
+What is the difference between @Bean and @Component ?
+If you declare both for the same class, which one takes precedence ?
+How does Spring manage dependency injection - at compile time or runtime ?
+Explain how to secure a REST API in Spring Boot ?
+How would you implement role-based access ?
+
+How would you handle token expiration ?
+Do you know about refresh token mechanism ?
+So let's say your spring boot application takes to long to start. So how would you diagnose and optimize startup time ?
+So let's say your changed a property in application.properties but it's not reflecting at runtime. Why ?
+Let's say your rest endpoint is returning stale cached data. How will you debug it ?
+So you have circular dependencies between two beans A and B. How to fix it ?
+Let's say you have sensitive configs like DB passwords and in your application properties or yaml file right ?, now how would you secure them ?
+Scheduled jobs in your spring application is running twice in production even though you deployed only once. What might be happening ?
+Let's say your application works locally but fails to connect to the database in production. So what steps would you take to troubleshoot ?
+Let's say after upgrading spring boot version your custom bean stopped working because a default bean started overriding it. So how would you resolve this ?
+
+Let's say payment is failed and also you have decreased the count in inventory. So how would be handle this ?
+And also let's say if there is only one item available in the stock and there are two people who are ordering at the same time so how will you manage this ?
+
+How would you override spring boot auto configuration without breaking the frameworks or existing things ?
+So what happens if no active profiles is set in spring boot ?,
+What if multiple profiles are set ?
+
+Servers :
+If you wanted to change the default embedded server from Tomcat to Jetty in Spring Boot, What configuration changes would you need to make, and what impact might that have on performance ?
+
+Beans:
+
+Imagine you have two beans of the same type but need to inject a specific one based on some runtime condition. How would you achieve this in Spring Boot ?
+
+REST APIs:
+
+Have you worked on APIs ? Tell me the process to create a REST API in Spring Boot ?
+About HATEOAS in REST ?
+If you're designing a REST API for a product catalog. How would you use HATEOAS to improve client interaction with your API ?
+If your API depends on an external service that occasionally fails, so what will you do ?
+Explain URL shortening service ?, What are the ways to create the URL shortener ?
+Can you please tell me how do you return a custom error JSON to the client side ?
+How do you version rest API is in spring boot ?
+Tell me what's the advantages of URI versioning and header versioning ?, And tell me comprising ?
+what is the Rate limiting ?
+Let's say one of your apis takes too long because it loads a large data set how would you improve the performance of that api ?
+So let's say a rest endpoint is returning outdated cache a data instead of fresh data. So what could be the issue ?
+So let's say you are working on rest apis and now you want to authenticate these apis. So how would you do that ? What would be the steps ?
+Let's say your rest api allows file uploads but users complain about large files failing silently. How would you debug and fix this ?
+Let's say your api endpoints an empty JSON response even though that DB has data. So what would be the issue ?
+Why services take long time in apis ?
+
+Spring :
+
+Difference between eager and lazy initialization in Spring ?
+In a large app, startup time is slow. How would you optimize bean loading using lazy initialization ?
+So tell me what's the difference between fetch type lazy and fetch type eager ?
+
+
+Annotations :
+
+@Bean, and how is it difference from @Component ?
+If you have a third-party class you cannot annotate with @Component. How can you register it as a bean in Spring ?
+The role of @Value and @ConfigurationProperties in Spring Boot ?
+The difference between @RequestParam, @PathVariable, and @RequestBody ?
+If you're designing a REST endpoint to update user profile details. Which annotation would you use for each of these: user ID, query parameters, and JSON body ?
+So tell me what are the spring boot application annotations actually do internally ?
+So can you replace it with individuals annotations ? (SprigBootApplication annotations)
+What happens if two auto configuration classes define the same bean ?
+What happens if you annotate a class with both controller and rest controller annotations ?
+How does spring boot decide whether to return a view or JSON response in this case ?
+
+Exceptions & Status codes :
+
+How does exception handling work in Spring Boot REST APIs ?
+If you want to return custom error messages with HTTP status codes for specific exception. How would you implement centralized exception handling ?
+Status codes how many ?, and what is it each code explain ?
+So have you heard about bean currently in creation exception ?
+
+Spring profiles.
+Log4j -> inside info numerical int value ?, warn int value ? debug int value ?, what are the levels there ?
+Explain transactional management ?, How to use without transaction annotation pure java code explain it and how to roll back it ?
+Suppose am create rest end points, what are the steps i need to follow and why i create rest end points what is the use ? end points what is the mandatory should i put ?
+What is the purpose of rest end points ?
+Suppose i create delete api and then is it possible give get method ?
+Environment management data how to maintain  ?
+How to create inhouse project, Pure object oriented programming language what are the steps i should follow ?
+So tell me how does spring boot autoconfiguration pick which beans to load when multiple candidates exist ?
+So tell me how does sprig boot handle circular dependencies in beans ?
+What is circular dependencies issue ?
+Can we resolve circular dependencies by using setter field injection or constructor injection ?
+
+Let's say you notice 100 plus SQL queries being fired for a single api request. How would you fix it ?
+Can explain difference between optimistic locking and pessimistic locking ?
+So suppose two users tries to book the last ticket at the same time how will you prevent over booking ?, And which locking prepare optimistic locking and pessimistic locking ?
+When would you use a native query instead of JPQL ?
+Tell me how do you handle dependency conflicts in a large maven project ?
+Do you know about multimodule project in maven ?
+So how would you improve build time in the multi module project ?
+So have you used parallel builds ?
+Do you know chuck uploads in spring boot ?
+
+Tell me the least use case annotations we don't use it, but are very important annotations in spring boot application ?
+So tell me is it possible there two request mapping with same url ?
+Con multiple @ControllerAdvice in application ?
+Tell me the difference between retuning response entity vs object through rest api ?
+Can tell me the @Autowired internally working annotations ?
+What is the difference between @Repository annotation @Service annotations ?
+Tell me five annotations most used you can use in spring boot application ?
+Best practice writing rest apis ?
+
+Primary annotation and when should it be used ?
+How did you configure multiple databases in your project ?
+Explain how you built a module from scratch ?
+What security parameters do you check in your application ?
+Why do you reuse the Spring architecture template ?
+How would you create a custom repository in Spring Data JPA ?
+About my current tech stack, and why did I use Spring JDBC instead of Hibernate ?
+How will you configure multiple databases from scratch in Spring Boot application ?
+How a payment gateway system works ?
+How will you return XML instead of JSON from a Spring Boot REST API ?
+About an interceptor and how is it used in Spring Boot ?
+How do you implement logging across the entire application without writing a logging statement in each method in the controller and DAO layers ?
+
+
+What are conditional annotations ?
+Have you used conditional annotations ?
+What are the purpose of using conditional annotations ?
+Can you explain the role of enabled auto configuration annotations ?
+How does spring boot achieve auto configuration ?
+
+How does Spring Boot perform auto-configuration behind the scenes ?
+What happens when two auto-configurations conflict ?
+About a @Conditional annotation and where have you used it ?
+How does Spring Boot reduce boilerplate, and what are the trade-offs ?
+Two beans of the same type are found. Spring throws NoUniqueBeanDefinitaionException. How to resolve it without changing the beans ?
+How do you handle application configuration in Spring Boot ?
+Difference between application.properties and application.yml ?
+What is the purpose of @Value and @ConfigurationProperties annotations ?
+How does Spring Boot handle circular dependencies ?
+What are the challenges of distributed systems that Spring Cloud tries to solve ?
+How do you handle communication between microservices ?
+What DSA/collection types do you use in your current project ?
+What is RestTemplate vs WebClient ?
+What are the common HTTP status codes you return from REST APIs ?
+How do you handle exception handling in a REST API ?
+What are DIO ( Data Transform Object) s and why should you use them ?
+What are idempotent methods in REST? Which HTTP methods are idempotent ?
+How do you propagate security tokens from API Gateway to downstream services ?
+How do you protect sensitive endpoints from brute force attacks ?
+One of your microservices is down. How will you handle the failure gracefully ?
+How do you implement pagination and Sorting with Spring Data JPA ?
+You have two entities - User and Order. A user can have multiple orders. How do you map this relationship using annotations ?
+About @Autowired and what are its alternatives ?
+
+Claims in JWT payload (audience, primary audience, secondary audience, scope ) ?
+
+Custom Authentication: Implementing custom Authentication and extracting | Extracting validating values from request headers ?
+
+Explain the impanation of JWT token ?
+
+Explain the significance of signature in JWT token ?
+
+  - What it is, 2-legged us 3-legged, public, private keys, jwt, certificate expiry etc ?
+
+ 	- Where the put Authentication / Authorization ?
+cross site request forgery (CSRF)
+
+What is the purpose of rest end points ?
+How do you serve the endpoints of string boot application ?
+
+About managing logging & monitoring of our application ?
+
+Scopes & Beans
+ 	- different scopes and real-time examples of what is use each ?
+
+Spring Boot flow:
+ 	- Filter, interceptor, controller, services, repository, DT OS ect.
+
+Spring boot vs spring MVC vs spring ??
+
+ANNOTATIONS:
+@ConfigurationProperties
+Embedded server how to run jar file ?
+
+Hibernate vs JPA ?
+@RequestBody ?
+URI, ServletUriComponentBuilder ?
+
+@ResponseStatus ?
+
+* Spring boot dev tools is disabled when you run a java jar file!
+
+
+Content Negotiation: XML or JSON ?
+
+
+HATEOAS => (Hypermedia as the Engine of Application State (HATEOAS) ?
+
+Customizing REST API Responses - Filtering and more ?
+How about customizi
+ng the REST API response returned by Jackson framework ?
+@JSONProperty ?
+Filtering : two types -> 1. static filtering, 2. Dynamic filtering ?
+
+STATIC FILTERING : Same filtering for a bean across different REST API.
+
+@JsonIgnore ?
+@JsonIgnoreProperties
+
+DYNAMIC FILTERING : Customize filtering for a bean for specific REST API.
+
+@JsonFilter with Filter provider ?
+
+Monitoring APIs with Spring Boot Actuator
+Exploring APIs with Spring Boot HAL Explorer
+
+
+async messaging like kafka and RabbitMQ ?
+
+Which database would you use for an application like Zepto ?
+Password rotation and encryption policies ?
+Are web logic and tomcat servers single-threaded or multi-threaded ?
+Spring cloud config server: purpose and interdipy with a spring boot application ?
+How can you ensure 100% test coverage in a spring boot application ?
+
+
+Difference between Sync and Async process ?
+About webhook ?
+Why do we need Async, why can't we use webhooks ?
+
+REQUEST METHODS FOR REST API :
+
+GET - Retrieve details of a resource ?
+POST - Create a new resource ?
+PUT - Update an existing resource ?
+PATCH - Update part of a resource ?
+DELETE - Delete a resource ?
+
+RESPONSE STATUS FOR REST API :
+
+- Return the correct response status
+ 	- Resource is not found => 404
+ 	- Server exception => 500
+ 	- Validation error => 400
+
+- Important Response Statues
+ 	- 200 => Success
+ 	- 201 => Created
+ 	- 204 => No Content
+ 	- 401 => Unauthorized(When authorization fails)
+ 	- 400 => Bad Request(Such as validation error)
+ 	- 404 => Resource Not Found
+ 	- 500 => Server Error
+
+Microservices :
+
+Eureka server (What it is, how to register services, load balancer operation) ?
+API Gateway (routing, programmatic vs YML configuration, properties, predicates ) ?
+Design patterns (CQRS, Saga, Orchestrator vs Choreography) ?
+Microservices design principles  ?
+Design patterns (again, with examples and implementation details ) ?
+RestTemplate vs WebClinet (differences, Mono, Flux, blocking vs. non-blocking requests) ?
+Microservices Design pattern ( CQRS, Sidecar ) ?
+Logging in Microservices (Logging framework used ) ?
+Trace ID and Span ID (what they are, how to use them for navigation across microservices) ?
+Which is constant across services (Trace ID or Span ID ) ?
+Microservices Deployment Strategies ?
+Blue-green deployment ?
+How to decide the number of instances required for a microservices ?
+
+Microservices design patterns :
+Strangler, Saga, (Orchestrator vs Choreography), CQRS?
+Logging in microservices ?
+Trace ID, Span ID, Micrometer ?
+
+Microservices : Blue-green deployment, advantages, and the process within microservices ?
+Microservices (Advanced) : Saga design pattern, distributed transactions handling, Choreography / Orchestrator design patterns, and Kafka annotations ?
+
+Microservices (Advanced): Event sourcing and disturbed tracing/transaction management ?
+
+MICROSERVICES :
+
+Let's say you deployed a new version of your microservice but it keeps failing due to missing variables. What will you do ?
+Let's say you have two microservices communicating via rest and one slows down others. How would you handle it ?
+So let's say your microservices is taking too long to start because of heavy bean initialization. okay. How would you optimize startup time ?
+So let's say you have two spring boot microservices communicating via rest right ?, and one frequently times out under load means in one of the microservices if there is heavy load it's failed or there is time out. So how would you handle it ?
+So in your system you have 10 spring boot microservices. okay. managing configuration separately has been painful. How would you handle centralized config management ?
+So tell me how would you design the checkout process for an e-commerce platform using spring boot microservices ? And what about inventory ?
+Microservices fall tolerance ?
+API Gateway ?
+Suppose your microservice start slowly due to bean initialization. So how would you be optimize the start up time ?
+So let's say you are migrating a monolithic application to a microservices right ?, how would you handle shared databases tables during migration ?
+Suppose your api response time went from 200 microseconds to 3 seconds after a new deployment. What steps will you take to debug ?
+Let's say one microservices goes down other depends on it how will you ensure the system is still responsive ?
+So let's say your microservices are facing high latency due to synchronous calls, How would you refactor them ?
+In the payment system suppose a payment API is called twice by mistake. So how will you prevent duplicate payments ?
+How do you implement a distributed tracing in microservices ?
+What is the saga design pattern and difference from two-phase commit ?
+Converting monolithic to microservices : What is challenges you have faced ?
+What annotation are used in microservice architecture ?
+On your project how is the structure and what are the main components ?
+Its microservices or monolithic application, If microservices can we name of some services in your project ?
+What's the challenging things you have done your project in past ?
+
+About Circuit Breaker pattern ? Have you used Resilience4j or Hystrix ?
+How would you trace a request across multiple microservices in a distributed system ?
+So can you tell me real world use of any design pattern that you have implemented ?
+Saga design pattern very useful in microservices right ?, So tell me any use case real world ?
+How would you design a notification service that sends SMS and email asynchronously ?, Have you use any Q ?, And what about failure handling ?
+What is optimistic versus pessimistic locking ?, so which one you choose for high concurrency update scenarios and why ?
+So your microservices sometimes fails under high load. How would you handle it ?
+
+Explain master slave architecture and what is the use of master and slaves ?
+What will happen if a master dies, or slave dies ?
+
+How will you get to know that a service is up and running in microservices ?
+Explain load balancer and rate limiter ?
+Difference between monolithic and microservice advantages and disadvantage of both ?
+
+Kafka :
+
+How to send events to Kafka (Kafka Template, Kafka Listener, Kafka Consumer ) ?
+Kafka configuration and basic communication ?
+Kafka : Topics, producers, consumers, listener, Zookeeper, properties for Spring Boot integration, consumer groups ?
+
+Kafka (Internal) : Internal workings of Kafka ?
+Kafka (Configuration): Number of partitions and consumers groups ?
+
+KAFKA:
+Kafka topics, producer, consumer, listener, 200keeper, properties for spring boot integration, consumer groups ?
+Kafka (Internus) : Internal working of kafaka ?
+Kafka (Configuration): number of partiens and consumer groups ?
+
+
+Agile Ceremonies :
+Scenarios-based questions (handling junior developers, spring planning disagreement, handling major changes near the end of a spring, managing a large team) ?
+How to handle conflicts of opinion within a team ?
+How to estimate effort for a user story in Agile ?
+How to handle requirement changes two days before the iteration completion date ?
+How to handle requirement changes after all changes have been completed and tested ?
+
+
+AGILE:
+
+Are you using agile method? And what the spring time in your project ?
+Why is agile prepared over the waterfall model ?
+About the agile practices being followed in my project ?
+Agile ceremonies ?
+Scenario - based questions (Handling junior developers, spring planning disagreements handling major change near the end of a sprint, managing a large team) ?
+What is agile and what is SDLC ?
+What is the current company sprint duration ?
+How to estimate effort for a user story in agile ?
+How to handle requirement changes two days before the interaction completion data ?
+How to handle requirement changes after all changes have been completed and tested ?
+
+
+Previous company experience and about the product which i was working on ?
+Explain about any struggles you faced and how did you over come it ?
+What will you do if you have any disagreement with your teammate ?
+What if the disagreement is not related to work ?
+What will you do if your colleague want's you to complete the task so that he can take off ?
+What will you say if you want to extend your work on Friday evening to complete a deliverable ?
+What you have learned recently ?
+
+
+HR:
+Why do you want to work as a Microservices developer ?
+What are your expectations from TCS ?
+Where do you see yourself in TCS ?
+Why TCS ?
+Are you willing to travel anywhere in Mumbai ?
+
+
+Why do you want to work at our company ?
+Why should you hire you ?
+
+
+Project:
+
+Explanations of your projects architecture diagram ?
+
+What's your day-to-day responsibilities ?
+
+Explain a project you have worked an from scratch ?
+Did you start development from scratch, or does the company provide a base project ?
+What's the 30% performance improvement you claimed in your resume? Prove that your project improved by 30% ?
+If new parameters are added to your project, how will you ensure the deadline is met ?
+
+PROJECT:
+If you problem in your application is running how would you find it ?
+How do you test your application ?
+What are the tools used for project development ?
+Explain of your projects architecture diagram ?
+Monitoring tools i have used in my project ?
+What testing tools will you prefer in your project ?
+How will you ensure compatibility when upgrade to the latest version spring boot ?
+
+JAVA VERSIONS:
+
+What's the latest version available in the java and which one you are using currently in your project ?
+
+Latest updates in java 17 ?
+
+Key difference between Java 8 and Java 17 ?
+
+What version of Spring Boot and JDK did you use in your recent projects ?
+
+How will you upgrade your project from Java 8 to Java 17 and What are the major changes involved ?
+
+GIT:
+Let's say your main branch you created features branches you can change code 30 commits so you can merge only two or three commits its not starting commits and ending commits it can be only select 2 or 3 commits. so how you push in main branch how would yo do that ?
+
+What's the difference between git rebase and git cherry pick ?
+Suppose two developers same class update how you handle this particular situation ?
+
+GIT- rebase, merge, how to resolve merge conflicts, push & pull, commit, remote & local. How to clone repository and how to check out branch, how to do stash.
+
+About CI/CD ?
+What does Kubernetes do ?
+What kind of deployment do you do, and how ?
+How do you adapt to a new technology ?
+Where do you learn about new technologies in the market ?
+
+How does caching work in Spring Boot ?
+
+How do you optimize N+ select problem ?
+
+VIP :
+Have you heard about strangler pattern ?
+So tell me how would you design API for uploading and processing large files in a scalable way ?
+You are designing a real time notification system like WhatsApp messaging right ?, which architecture would you use uh among polling, web sockets or messaging cube ?
+
+
+Moven :
+Clean, test, install, compile, package, war what is this, what do this ?
+Cyclic dependency ?
+
+SOAP UI, PostMan ?
+
+SECOND ROUND :
+
+SYSTEM DESIGN QUESTIONS :
+
+Design a video steaming platform like youtube ?
+
+How to handle millions of concurrency users ?
+
+About CDN, Redis, and load balancing strategies ?
+
+About storing and managing videos ?
+
+SQL vs NOSQL for metadata storage ?
+
+
+About kafka and what is offsets in kafka ?
+How kafka works ?
+
+Explain my project architecture ?
+
+How can we extract headers in spring boot ?
+
+How to create inhouse create object-oriented how to create what are the steps you follow ?
+
+VERSION CONTROLE AND DOCKER, KUBERNATIES :
+
+Which version control and CI/CD principle you are using ?
+About CI/CD principles and the best deployment strategies ?
+CIDI pipelines i have used in my project ?
+
+What is TDD, BDP, Testing pyramind ?
+
+What are different types of deployment ?
+How deployment works in java ? How pipeline code is written ?
+
+GENERAL QUESTION:
+
+What is the SDLE (Software development life cycle) ?
+How to handle conflicts of opinion within a team ?
+
+Personal question :
+
+Reason for switching job ?
+Where do you see yourself in the next few years ?
+
+IDE :
+Why do you use Eclipse instead of IntelliJ and Which version of Eclipse do you use ?
+How will you identify that a project is based on microservices just by looking at in Eclipse ?
