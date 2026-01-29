@@ -1,0 +1,588 @@
+Q : Can a deadlock occur with a single thread ?
+
+A : A deadlock cannot occur with a single thread because deadlock requires circular waiting between multiple threads. However, a single thread can block itself indefinitely using mechanisms like join(), wait(), or improper locking, which may look like a deadlock but is not technically one.
+
+Can a Deadlock Occur with a Single Thread?
+Short Answer: No, a traditional deadlock cannot occur with a single thread in the classical sense, but a single thread can experience a "self-deadlock" or effectively block itself forever.
+Interview Explanation
+Traditional Deadlock (Requires Multiple Threads)
+A classic deadlock requires at least two threads competing for two or more resources. The four necessary conditions are:
+
+Mutual Exclusion - Resources can't be shared
+Hold and Wait - Thread holds one resource while waiting for another
+No Preemption - Resources can't be forcibly taken
+Circular Wait - Circular chain of threads waiting for resources.
+
+"No, a traditional deadlock requires at least two threads competing for resources in a circular wait. However, a single thread can effectively deadlock itself through scenarios like calling join() on itself or acquiring a non-reentrant lock twice. In Java, synchronized blocks are reentrant, so the same thread can acquire the same lock multiple times without deadlocking. But with tools like Semaphore or calling Thread.currentThread().join(), a single thread can block itself indefinitely, which is sometimes called a 'self-deadlock.'"
+
+Q : How do you check if a Thread holds a lock or not?
+
+A : For intrinsic locks, Java provides Thread.holdsLock(Object) to check whether the current thread holds the monitor lock. For explicit locks like ReentrantLock, methods such as isHeldByCurrentThread() and isLocked() are used. For debugging other threads’ lock ownership, tools like ThreadMXBean or jstack are used rather than application code.
+
+Q : What are use cases of ThreadLocal variables in Java?
+
+A : ThreadLocal is used to maintain thread-confined data such as user context, transaction state, database connections, date formatters, and logging correlation IDs. It avoids synchronization by giving each thread its own variable copy but must be cleaned properly to avoid memory leaks, especially in thread pools.
+
+Q : What is the role of ExecutorService in the Executor Framework? What methods does it
+provide?
+
+A : ExecutorService is the core interface of the Executor Framework that manages thread pools, executes submitted tasks asynchronously, returns results via Future, and provides lifecycle management such as shutdown and task cancellation.
+
+Q : What is the difference between submit() and execute() methods in the Executor Framework?
+
+A : execute() is used for fire-and-forget tasks without result tracking, while submit() returns a Future that allows retrieving results, handling exceptions, and cancelling tasks, making it more suitable for production use.
+
+Q : What is the RejectedExecutionHandler in ThreadPoolExecutor? How can you customize it?
+
+A : RejectedExecutionHandler is a strategy used by ThreadPoolExecutor to handle tasks that cannot be executed due to thread pool saturation. It can be customized to log, retry, redirect, or apply backpressure based on application requirements.
+
+Q : How do you get a thread dump in Java?
+
+A :  A thread dump can be obtained using tools like jstack, kill -3, JConsole, or VisualVM to capture the state and stack traces of all JVM threads, which helps diagnose deadlocks, performance issues, and application hangs.
+
+
+Q : Exception Hierarchy in Java ?
+
+A : In Java, all exceptions inherit from Throwable, which is divided into Error (unrecoverable JVM issues) and Exception. Exception further divides into checked exceptions (handled at compile time) and unchecked exceptions (RuntimeException, caused by programming errors).
+
+Object
+ └── Throwable
+      ├── Error
+      │    ├── OutOfMemoryError
+      │    ├── StackOverflowError
+      │    └── VirtualMachineError
+      │
+      └── Exception
+           ├── Checked Exceptions
+           │    ├── IOException
+           │    ├── SQLException
+           │    └── ClassNotFoundException
+           │
+           └── RuntimeException
+                ├── NullPointerException
+                ├── ArithmeticException
+                ├── IllegalArgumentException
+                └── IndexOutOfBoundsException
+
+Checked vs. Unchecked
+
+Checked exceptions: Subclasses of Exception but notRuntimeException. Must be either caught in a try-catch block or declared in the method's throws clause.
+Unchecked exceptions: RuntimeException and its subclasses, plus all Errors. No compile-time requirement to handle them (though you can if desired).
+
+Q : What happens when an exception is thrown in a static initialization block?
+
+A : If an exception occurs in a static initialization block, the JVM throws an ExceptionInInitializerError, the class initialization fails, and the class becomes unusable. Subsequent accesses result in NoClassDefFoundError.
+
+Q : Provide an example of when you would purposely use a checked exception over an unchecked
+one.
+
+A : I use a checked exception when a failure is expected, recoverable, and the caller must explicitly handle it—such as insufficient balance during a money transfer—because ignoring it could cause serious business issues.
+
+🏆 Senior-Level Bonus Answer
+
+Checked exceptions are ideal for business rule violations or external system failures, while unchecked exceptions should represent programming mistakes.
+
+Q : What happens if a thread throws an unchecked exception ?
+
+A : If a thread throws an unchecked exception and it is not caught, the thread terminates immediately.
+The exception does not crash the JVM.
+Other threads continue running normally.
+The exception can be handled using a Thread.UncaughtExceptionHandler.
+
+What EXACTLY Happens Internally?
+
+When a thread throws an unchecked exception (RuntimeException, Error) and it’s not caught:
+
+The thread’s execution stops
+JVM checks for an UncaughtExceptionHandler
+If found → handler is invoked
+If not → stack trace is printed to stderr
+Thread dies
+JVM continues (unless it’s the main thread and no non-daemon threads remain)
+
+When a thread throws an unchecked exception and it is not caught, the thread terminates immediately. The JVM remains alive, other threads continue execution, and the exception can only be handled using an UncaughtExceptionHandler or by retrieving it from a Future in ExecutorService.
+
+The exception is uncaught inside the thread.
+The thread terminates immediately.
+The exception does not affect other threads, including the main thread.
+The JVM prints the exception stack trace for that thread.
+
+Thread dies immediately if it throws an unchecked exception and it’s uncaught.
+Other threads continue running normally.
+Use UncaughtExceptionHandler or handle exceptions inside the thread to prevent sudden termination.
+In ExecutorService, exceptions behave differently depending on submit() vs execute().
+
+
+Q : Can you handle uncaught exceptions in threads ?
+
+A : Uncaught exceptions in threads are handled using Thread.UncaughtExceptionHandler.
+It can be set at the thread level, thread-group level, or globally for the JVM.
+For ExecutorService, exceptions must be handled using Future.get() or a custom ThreadFactory.
+
+Yes, uncaught exceptions in threads can be handled using Thread.UncaughtExceptionHandler. It can be set per thread, per thread group, or globally. For ExecutorService, exceptions should be handled via Future.get() or a custom ThreadFactory.
+
+Q : What is Try-With-Resources?
+
+A : try-with-resources is a Java language feature introduced in Java 7 that automatically closes resources (like files, sockets, database connections) after use, even if exceptions occur.
+
+A “resource” is any object that implements the AutoCloseable interface.
+Helps avoid resource leaks that often happen when we forget to close streams or connections.
+
+Q : Let's say you have service that calls three downstream services. One fails unexpectedly. How would you wrap and send meaningful exception to the client ?
+
+A : Always wrap low-level exceptions with meaningful context for clients.
+Use custom exceptions or error objects instead of raw exceptions.
+Do not expose stack traces or internal class names to clients.
+Consider resilience patterns (circuit breakers, retries) to improve fault tolerance.
+
+When Service C fails, Service A should catch the downstream exception, wrap it in a domain-specific exception, and return a meaningful HTTP response such as 503 with a clear error code and message. This keeps Service A in control and prevents leaking internal details.
+
+Key Principles:
+Don't expose internal details - avoid stack traces, server paths, etc.
+Use consistent error codes - clients can program against these
+Include correlation IDs - for debugging and support
+Provide actionable information - what can the client do?
+Log appropriately - detailed logs internally, clean messages externally
+Maintain security - don't leak sensitive information
+Use proper HTTP status codes - 4xx for client errors, 5xx for server errors
+
+
+Q : Thread Life Cycle in Java
+
+A : A Thread goes through six conceptual states defined in java.lang.Thread.State:
+
+1. NEW
+2. RUNNABLE
+3. BLOCKED
+4. WAITING
+5. TIMED_WAITING
+6. TERMINTED
+---------------------------
+
+1. NEW -> Thread object is created but not started.
+2. RUNNABLE -> Thread is eligible to run, but may or many not actually be running on the CPU. (JVM + OS scheduling decide this.)
+
+Note : In Java, RUNNABLE includes :
+
+* ready-to-run
+* running on CPU.
+
+3. BLOCKED -> Thread is trying to enter to synchronized block/method, but another thread currently owns the lock.
+It is waiting to acquire a monitor lock.
+
+4. WAITING -> Thread is waiting indefinitely for another thread's action.
+It enters WAITING for methods like :
+
+Object.wait() --- Waiting to be notified
+Thread.join() --- Waiting for another thread to die
+LockSupport.park() --- Waiting to be unparked
+
+The thread stays here until:
+
+* notify() / notifyAll() is called
+* join() thread finishes
+* park() is unparked
+
+5. TIMED_WAITING -> Thread waits for a specified time.
+
+It enters TIMED_WAITNIG for methods like:
+Thread.sleep(ms)
+Object.wait(ms)
+Thread.join(ms)
+LockSupport.parkNanos()
+LockSupport.parkUntil()
+
+6. TERMINATED -> Thread has completed execution or terminated abnormally due to exception.
+
+Interview Tip (Very Important) 
+Java does NOT have a RUNNING state in Thread.State Enum.
+It is merged into RUNNALBE.
+
+BLOCKED 	vs	 WAITING
+
+Waiting for lock. 	Waiting for signal.
+synchronized 		wait() / join()
+Lock must be released. 	Thread must be notified.
+
+WAITING 	vs 	TIMED_WAITING
+
+Infinite wait. 		Time-bound
+Needs notify. 		Auto wakeup
+
+Java threads have six states: NEW, RUNNABLE, BLOCKED, WAITING, TIMED_WAITING, and TERMINATED. These states describe how a thread is created, scheduled, waiting for locks or signals, sleeping, or finished. Java uses RUNNABLE to represent both ready and running threads, while BLOCKED and WAITING indicate synchronization and coordination issues.
+
+Q : What is the difference between wait(), sleep(), and yield() ?
+
+A : wait() releases the lock and waits for a notification, sleep() pauses execution for a fixed time without releasing locks, and yield() hints the scheduler to give other threads a chance while remaining runnable.
+
+1. wait() -> Used for inter-thread communication. A thread waits until another thread notifies it.
+2. sleep() -> Pause execution of the current thread for a specified time.
+3. yield() -> Hints to the thread scheduler that the current thread is willing to give up CPU temporarily, it may or may not actually stop running.
+
+Q : Prefer BlockingQueue, Semaphore, Lock ?
+
+A : In modern Java, we prefer BlockingQueue for producer–consumer scenarios, Semaphore for controlling concurrent access to limited resources, and Lock for advanced locking needs. These utilities are safer, clearer, and less error-prone than low-level wait/notify.
+
+
+Q : What is a Deadlock ?
+
+A : A deadlock occurs when two or more threads are waiting indefinitely for each other to releases resources, so none of them can proceed.
+
+Example Scenario:
+
+* Thread A holds Lock 1 and waits for Lock 2
+* Thread B holds Lock 2 and waits for Lock 1
+* Both threads wait forever -> deadlock
+
+Four Necessary Conditions for Deadlock (Coffman Conditions)
+
+Mutual Exclusion – At least one resource is non-shareable.
+Hold and Wait – A thread holds one resource while waiting for another.
+No Preemption – Resource cannot be forcibly taken away.
+Circular Wait – A closed chain of threads exists, each waiting for a resource held by the next.
+
+All four must occur for deadlock.
+
+How to Avoid Deadlocks ?
+
+A) Lock Ordering (Prevent Circular Wait)
+Always acquire multiple locks in same global order.
+If all threads follow the same order -> no circular wait -> no deadlock
+B) Try-Lock with Timeout
+Use ReentrantLock.tryLock(timeout) to avoid waiting forever.
+If timeout expires -> thread can back off -> no deadlock.
+C) Avoid Nested Locks
+Keep synchronized blocks short and avoid locking multiple objects whenever possible.
+D) User Higher Level Concurrency Utilities
+Use java.util.concurrent classes like:
+ConcurrentHashMap
+BlockingQueue
+Semaphore
+These are designed to reduce explicit locks -> lower deadlock risk.
+
+------------------------------------
+Deadlock occurs when two or more threads are waiting forever for locks held by each other, so no thread can proceed.
+
+Simple Example (Real Life)
+
+Thread-1 holds Lock A → waiting for Lock B
+Thread-2 holds Lock B → waiting for Lock A
+💥 Both wait forever → deadlock
+
+🧠 Four Necessary Conditions for Deadlock (Must Say in Interview)
+
+1️⃣ Mutual Exclusion – resource is non-shareable
+2️⃣ Hold and Wait – thread holds one lock and waits for another
+3️⃣ No Preemption – lock can’t be forcibly taken
+4️⃣ Circular Wait – circular dependency exists
+
+👉 Deadlock happens only if all four occur
+
+Deadlock is a situation where threads wait forever due to circular lock dependency. It happens when mutual exclusion, hold-and-wait, no preemption, and circular wait occur together. We avoid deadlocks by enforcing lock ordering, using tryLock with timeout, reducing lock scope, avoiding nested locks, and preferring high-level concurrency utilities.
+
+Q : About a race condition and how can it prevented ?
+
+A : A race condition occurs when multiple threads access shared mutable data concurrently without proper synchronization, leading to unpredictable results. It can be prevented using synchronization, atomic variables, locks, thread-safe collections, and by reducing shared mutable state through immutability and stateless design.
+
+What is a Race Condition?
+
+A race condition occurs when two or more threads access and modify shared data concurrently, and the final outcome depends on the timing of execution.
+It leads to unexpected or incorrect results.
+Usually happens when operations are non-atomic (read-modify-write).
+
+How to Prevent Race Conditions
+
+A. Using synchronized
+Ensures mutual exclusion for critical sections.
+
+B. Using ReentrantLock
+Provides more flexibility than synchronized.
+Can use tryLock(), timeouts, or fairness policies.
+
+C. Using Atomic Variables
+For simple counters/flags, use atomic classes in java.util.concurrent.atomic.
+Operations are atomic and thread-safe without explicit locks.
+
+
+D. Using High-Level Concurrency Utilities
+ConcurrentHashMap, BlockingQueue, CopyOnWriteArrayList handle internal synchronization.
+Avoids race conditions for shared collections or queues.
+
+E. Immutable Objects
+If shared objects are immutable, threads can read safely without synchronization.
+
+
+🏁 What is a Race Condition?
+
+A race condition occurs when multiple threads access and modify shared data concurrently, and the final result depends on the timing (race) of execution.
+👉 The program behaves unpredictably.
+
+Simple Real-Life Example
+Two ATM machines withdraw money from the same account at the same time.
+
+A race condition occurs when multiple threads access shared mutable data concurrently without proper synchronization, leading to unpredictable results. It can be prevented using synchronization, atomic variables, locks, thread-safe collections, and by reducing shared mutable state through immutability and stateless design.
+
+Q : If you're using an ExecutorsService to manage multiple threads in a web application. How would you handle the scenarios when the task execution time exceeds the expected time, and how would you stop the threads ?
+
+A : In a web application, I handle long-running tasks by enforcing timeouts using Future.get(timeout) or invokeAll with time limits, canceling tasks via interruption, and ensuring tasks are interruption-aware. I stop threads safely by using graceful shutdown with shutdown() and awaitTermination(), and fall back to shutdownNow() if required. I also use bounded thread pools and propagate timeouts end-to-end.
+
+Key Best Practices for Web Applications
+
+Use a bounded thread pool (like Executors.newFixedThreadPool) to avoid exhausting resources.
+Set timeouts for tasks to prevent hanging threads.
+Always handle InterruptedException in tasks.
+Prefer Future + timeout instead of unbounded get() calls.
+Shutdown ExecutorService during application stop to avoid thread leaks.
+Monitor long-running tasks using metrics or logging.
+
+Q : Explain the difference between the synchronized keyword and re-entrant lock interface ?
+
+A : synchronized is a simple, JVM-managed locking mechanism with automatic lock release, while ReentrantLock is an explicit lock providing advanced features such as tryLock, fairness, interruptible locking, and multiple conditions. synchronized is preferred for simple cases, whereas ReentrantLock is used for complex concurrency control.
+
+1️⃣ synchronized Keyword
+
+A built-in Java mechanism for mutual exclusion.
+Can be used on methods or blocks to ensure that only one thread executes the critical section at a time.
+
+Key Points:
+Simpler to use, no extra API needed.
+Lock is automatically released when the synchronized block/method ends.
+Supports reentrancy (a thread holding the lock can enter again).
+Cannot interrupt a thread waiting for a synchronized lock.
+Cannot try to acquire lock with a timeout.
+
+2️⃣ ReentrantLock Interface (java.util.concurrent.locks)
+
+An explicit lock implementation that provides more flexibility than synchronized.
+Part of java.util.concurrent.locks package.
+
+Key Features:
+Interruptible Lock Acquisition – can use lock.lockInterruptibly()
+Try Lock with Timeout – can use tryLock(long timeout, TimeUnit unit)
+Fairness Option – can create fair lock to prevent starvation:
+Supports reentrancy (same thread can lock multiple times)
+Explicit unlock required; forgetting unlock() can cause deadlocks
+
+Q : Why is it called a Re-entrant Lock?
+
+A : A lock is called re-entrant because the same thread can acquire the same lock multiple times without getting blocked or causing a deadlock.
+👉 “Re-enter” literally means entering again.
+
+Normally, when a thread enters a synchronized block or acquires a lock, it holds that lock.
+If the same thread tries to acquire the same lock again (e.g., via nested method calls), it won’t block itself. This is called reentrancy.
+Why important:
+Without reentrancy, a thread would deadlock itself if it tries to acquire a lock it already holds.
+
+Key Points
+Reentrant = thread can re-acquire the same lock it already owns.
+Prevents self-deadlock when a thread calls nested methods.
+Both synchronized and ReentrantLock in Java are reentrant.
+ReentrantLock keeps an internal hold count to track how many times the thread has acquired it.
+
+Q : So tell me which scenarios would you prefer re-entrant lock over synchronized ?
+
+A : I prefer ReentrantLock over synchronized when I need advanced locking features such as tryLock, timeout-based acquisition, interruptible locking, fairness, or multiple conditions. For simple mutual exclusion, I stick to synchronized for clarity and safety.
+
+Use synchronized by default.
+Use ReentrantLock only when you need capabilities that synchronized cannot provide.
+
+1). When you need tryLok() (Avoid Deadlock / Fail Fast) -> I use ReentrantLock when i need non-blocking or fail-fast locking.
+2). When you need Timeout while waiting for lock -> synchronized doesn't support timeout-based lock acquisition.
+3). When Threads must be interruptible -> With ReentrantLock, threads can respond to interruption, which is critical in web applications.
+4). When you need fair locking (prevent Starvation) -> synchronized has no fairness guarantee, while ReentrantLock can enforce FIFO ordering.
+5). When you need multiple conditions (Advanced Coordination) -> ReentrantLock supports multiple conditions, unlike wait/notify.
+
+Q : So tell me we can do fair ordering by using re-entrant locking right ?, but we cannot do in the synchronize by using synchronized keyword. So what does this mean fair ordering ?
+
+A : ✅ Yes — Fair Ordering is possible with ReentrantLock, NOT with synchronized
+
+🔁 What does Fair Ordering mean?
+
+Fair ordering means threads acquire a lock in the same order in which they requested it (FIFO — First Come, First Served).
+👉 No thread is allowed to jump the queue.
+
+❌ What happens with synchronized?
+
+synchronized has NO fairness guarantee.
+JVM decides which waiting thread gets the lock
+Depends on:
+JVM implementation
+OS thread scheduling
+A thread can wait indefinitely (starvation)
+
+
+Fair ordering means threads acquire a lock in FIFO order, ensuring that the longest-waiting thread gets the lock next. ReentrantLock supports this through a fair lock option, while synchronized provides no fairness guarantee and may cause thread starvation under contention.
+
+
+Q : Can you explain how you would handle an exception inside a stream pipeline ? And how would you prevent that from breaking the stream exception ? 
+
+A : Streams are fail-fast, so exceptions inside a pipeline terminate execution. To prevent this, we handle exceptions inside lambdas, filter invalid data early, or use helper methods or Optionals to safely continue the stream.
+
+Q : Can you explain map compute is absent ?
+
+A : “computeIfAbsent() computes and inserts a value only if the key is missing or mapped to null. It avoids unnecessary computation, is atomic, and is commonly used for caching and grouping data.”
+
+Memory management :
+
+Q : How does Java handle memory leaks?
+
+A : Java handles memory leaks by using automatic garbage collection, but it cannot reclaim objects that are still referenced.
+Most Java memory leaks are logical leaks, caused by static references, unclosed resources, caches without eviction, ThreadLocal misuse, or listener references.
+Java provides tools like WeakReferences, try-with-resources, heap dumps, and profilers to prevent and detect leaks, but developers must design code carefully.
+
+Q : What tools or techniques are used in Java to identify and fix memory leaks?
+
+A : In Java, memory leaks are identified using monitoring tools, heap dumps, and profilers such as VisualVM, JConsole, JProfiler, Java Flight Recorder, jmap, and Eclipse MAT.
+Leaks are fixed by analyzing object retention paths, identifying strong references that prevent garbage collection, and refactoring code using techniques like proper resource closing, removing static references, clearing ThreadLocals, and using weak references or bounded caches.
+
+Java identifies memory leaks using heap dumps, profilers, and monitoring tools, and fixes them by analyzing object retention paths, removing strong references, properly closing resources, clearing ThreadLocals, and using weak or bounded collections.
+
+Q : Describe the Java memory model.
+
+A : The Java Memory Model defines how threads interact through memory by specifying rules for visibility, atomicity, and ordering.
+It introduces the concept of working memory and main memory, explains happens-before relationships, and defines the semantics of constructs like volatile, synchronized, and final to ensure predictable behavior in concurrent programs.
+
+Q : What is the visibility problem in the Java Memory Model?
+
+A : The visibility problem in Java occurs when updates made by one thread are not visible to other threads due to thread-local caching and reordering allowed by the Java Memory Model. It is solved using volatile, synchronized, atomic variables, or by establishing a proper happens-before relationship.
+
+The visibility problem occurs when changes made by one thread to shared variables are not visible to other threads in a timely manner (or at all).
+Why It Happens
+Each thread can cache variables in its own working memory (CPU cache, registers) rather than always reading from main memory. When a thread modifies a variable, it might update only its local cache without immediately writing back to main memory. Other threads reading that variable might continue seeing the old cached value.
+Additionally, compilers and processors can reorder instructions for optimization, which can make updates appear to happen in different orders than written in code.
+
+Q : How does garbage collection handle circular references?
+
+A : Java garbage collection handles circular references automatically.
+If a group of objects only reference each other but are not reachable from any GC root, the entire cycle is eligible for garbage collection.
+
+👉 Circular references do NOT cause memory leaks in Java by themselves.
+
+Java garbage collection handles circular references automatically using reachability analysis. If objects in a cycle are not reachable from any GC root, the entire cycle is garbage collected. Circular references only cause memory leaks when they are unintentionally retained by a GC root.
+
+Q : How does the static keyword affect memory management in Java?
+
+A : The static keyword causes variables and methods to belong to the class and be stored in the Method Area (Metaspace). Static fields act as GC roots, so any objects referenced by them remain in memory for the lifetime of the class. Improper use of static references—such as static caches or ThreadLocals—can prevent garbage collection and lead to memory leaks.
+
+Q : What is the difference between NoClassDefFoundError and ClassNotFoundException?
+
+A : ClassNotFoundException is a checked exception thrown when an application tries to load a class dynamically and the class is not found at runtime.
+NoClassDefFoundError is an Error thrown when a class was present at compile time but cannot be found or loaded at runtime.
+
+ClassNotFoundException occurs when an application explicitly tries to load a class that is not available at runtime, whereas NoClassDefFoundError occurs when the JVM fails to load a class that was available during compilation but is missing or cannot be initialized at runtime.
+
+The practical takeaway: ClassNotFoundException is about explicit loading failures you can anticipate and handle, while NoClassDefFoundError usually indicates deployment or configuration problems.
+
+Q : How does class loading affect memory usage?
+
+A : Class loading affects memory usage because every loaded class consumes memory in the Method Area (Metaspace) and may retain heap objects through static fields. Classes remain in memory as long as their ClassLoader is alive, so excessive or improper class loading can lead to high Metaspace usage or memory leaks. 
+
+Class loading affects memory usage because every loaded class consumes memory in Metaspace for metadata and may retain heap memory through static fields. Classes remain in memory as long as their ClassLoader is alive, so excessive class loading, static references, or ClassLoader leaks can lead to high Metaspace usage and memory leaks. Class unloading occurs only when the associated ClassLoader becomes unreachable.
+
+The key insight: classes aren't "free" - each one consumes memory, and in environments with frequent redeployments or dynamic class generation, class metadata can become a significant portion of your application's memory footprint.
+
+Q :  Is it possible to unload a class in Java?
+
+A : In Java, individual classes cannot be unloaded explicitly.
+A class is only unloaded when its defining ClassLoader becomes unreachable and there are no live references to the class or any of its static members.
+So, class unloading happens indirectly, and not for every class in the JVM.
+
+Java cannot unload individual classes; classes are unloaded only when their ClassLoader becomes unreachable and there are no live references to the classes or their static fields. Using custom ClassLoaders allows dynamic class loading and eventual unloading.
+
+Q : How do JVM optimizations affect the performance of Java applications?
+
+A : JVM optimizations improve Java application performance by reducing execution time, minimizing memory usage, and improving responsiveness.
+Optimizations include Just-In-Time (JIT) compilation, escape analysis, inlining, dead code elimination, garbage collection tuning, and thread scheduling.
+While most optimizations are automatic, understanding them helps write more efficient code and avoid surprises.
+
+JVM optimizations such as JIT compilation, method inlining, dead code elimination, escape analysis, and garbage collection tuning improve Java application performance by making execution faster, reducing heap allocations, and minimizing GC pauses. Understanding these optimizations helps write efficient code, benchmark accurately, and avoid common performance pitfalls.
+
+
+Q : What are anonymous classes and their advantages?
+
+A : Anonymous classes are unnamed inner classes used to provide a one-time implementation of an interface or subclass, helping reduce boilerplate code and keep behavior localized.
+
+Anonymous classes are unnamed inner classes in Java that are declared and instantiated in a single expression. They are mainly used to provide a one-time implementation of an interface or to override methods of a class.
+
+Q : What is the inheritance and composition and what's the difference between ?
+
+A : 
+1️⃣ What is Inheritance?
+Inheritance is an “IS-A” relationship where one class extends another class and inherits its fields and methods.
+
+2️⃣ What is Composition?
+Composition is a “HAS-A” relationship where one class contains an object of another class and uses its functionality.
+
+Inheritance represents an IS-A relationship and enables code reuse through class extension, while composition represents a HAS-A relationship and achieves reuse by delegating behavior to contained objects, offering better flexibility and loose coupling.
+
+Q : What is the difference between association, aggregation, and composition in Java?
+
+A : 
+
+1️⃣ Association
+Association is a general relationship between two classes where one class uses or knows about another class.
+👉 It represents a “uses-a” relationship.
+
+2️⃣ Aggregation
+Aggregation is a special form of association that represents a HAS-A relationship, where the child can exist independently of the parent.
+👉 “Whole–Part” relationship (weak ownership)
+
+3️⃣ Composition
+Composition is a strong form of aggregation where the child object cannot exist without the parent.
+👉 “Whole–Part” relationship (strong ownership)
+
+Association is a general relationship where objects are connected, aggregation is a weak HAS-A relationship with independent lifecycles, and composition is a strong HAS-A relationship where the child’s lifecycle depends on the parent.
+
+IS-A represents inheritance where a class extends another class, while HAS-A represents composition where a class contains another class object and delegates behavior, providing better flexibility and loose coupling.
+
+Q : What is ThreadLocal?
+A : ThreadLocal provides thread-local variables where each thread has its own independent copy of the variable. Changes made by one thread don't affect other threads.
+
+"ThreadLocal provides thread-local variables where each thread has its own independent copy. It's useful for storing per-thread context like user sessions, database connections, or SimpleDateFormat instances. Key methods are set(), get(), and remove(). Always call remove() in a finally block to prevent memory leaks, especially with thread pools where threads are reused. Common use case is storing user context in web applications so any method can access the current user without passing it as a parameter."
+
+Q :  How do you handle thread interruption in Java?
+
+A : **“Thread interruption in Java is a cooperative mechanism used to request a thread to stop. Calling interrupt() sets an interrupt flag; it does not forcibly kill the thread. If the thread is blocked in methods like sleep, wait, or join, Java throws InterruptedException and clears the flag.
+The correct handling is to either propagate the exception or, if I catch it and can’t rethrow, restore the interrupt using Thread.currentThread().interrupt() and exit gracefully.
+For non-blocking or CPU-bound tasks, I regularly check isInterrupted() inside loops. In executor frameworks, task cancellation and shutdownNow() work through interruption, so tasks must respect it for graceful shutdown.”**
+
+“Thread interruption is a cooperative way to signal a thread to stop. It sets an interrupt flag, and blocking calls throw InterruptedException. Best practice is to either rethrow it or restore the interrupt and exit cleanly. ExecutorService uses interruption for task cancellation.”
+
+What is Thread Interruption?
+Thread interruption is a cooperative mechanism to signal a thread that it should stop what it's doing. It doesn't forcibly stop the thread - the thread must check and respond to the interruption.
+
+"Handle thread interruption by checking isInterrupted() in loops and catching InterruptedException from blocking methods like sleep(), wait(), or join(). When catching InterruptedException, either propagate it or restore the interrupted status using Thread.currentThread().interrupt(). Always clean up resources in a finally block before the thread exits."
+
+
+
+Exceptions :
+
+Q : What happens when an exception is thrown in a static initialization block?
+
+Exception in Static Initialization Block
+What Happens?
+
+A : When an exception is thrown in a static initialization block, it gets wrapped in an ExceptionInInitializerError and the class initialization fails. The class becomes unusable for the lifetime of the JVM.
+
+"When an exception is thrown in a static initialization block, the JVM wraps it in an ExceptionInInitializerError. The class initialization fails and the class becomes permanently unusable. On the first access attempt, you get ExceptionInInitializerError with the original exception as the cause. On subsequent attempts, you get NoClassDefFoundError because the JVM marks the class as failed and won't retry initialization. For checked exceptions, you must either handle them in a try-catch block or wrap them in an unchecked exception like RuntimeException or ExceptionInInitializerError. Best practice is to keep static blocks simple, use lazy initialization for complex operations, and provide fallback defaults rather than allowing initialization to fail completely."
+
+**“If an exception is thrown inside a static initialization block, the JVM treats it as a failure to initialize the class. The original exception is wrapped inside an ExceptionInInitializerError.
+As a result, the class is considered unusable, and any subsequent attempt to use that class will result in a NoClassDefFoundError. The static block is executed only once, so the class will not be reinitialized.”**
+
+“An exception in a static block causes class initialization to fail, throwing ExceptionInInitializerError. Future references to the class result in NoClassDefFoundError.”
+
+Q : Provide an example of when you would purposely use a checked exception over an unchecked
+one.
+
+A : **“I purposely use a checked exception when the caller can reasonably recover from the failure and must be forced to handle it. A good example is reading data from an external system like a file, database, or network, where failures are expected and part of normal control flow.
+
+Using a checked exception makes the failure explicit in the method contract, ensuring the caller either handles it or propagates it, which improves reliability in boundary or integration layers.”**
+
+“I use a checked exception when the caller is expected to recover and must be forced to handle the failure, such as I/O or external system interactions.”
+
+"I use checked exceptions when the caller can reasonably recover from the error. For example, in a banking application, I'd use a checked InsufficientFundsException because the user can respond by withdrawing a smaller amount or transferring funds. Similarly, FileNotFoundException is checked because the caller can ask the user for a different file path. Another example is RateLimitExceededException in an API client - the caller can wait and retry. The key is that checked exceptions force the caller to acknowledge and handle the condition, which is appropriate when recovery is possible. In contrast, I use unchecked exceptions like IllegalArgumentException for programming errors that should be fixed in code, not handled at runtime."
+
+
+
+
+
