@@ -15,6 +15,25 @@ Circular Wait - Circular chain of threads waiting for resources.
 
 "No, a traditional deadlock requires at least two threads competing for resources in a circular wait. However, a single thread can effectively deadlock itself through scenarios like calling join() on itself or acquiring a non-reentrant lock twice. In Java, synchronized blocks are reentrant, so the same thread can acquire the same lock multiple times without deadlocking. But with tools like Semaphore or calling Thread.currentThread().join(), a single thread can block itself indefinitely, which is sometimes called a 'self-deadlock.'"
 
+Q : Explain the Java concurrency model.
+
+A : Java concurrency model is based on a shared-memory, multi-threaded architecture governed by the Java Memory Model (JMM).
+It defines how threads interact through memory, ensuring atomicity, visibility, and ordering guarantees using constructs like synchronized, volatile, locks, atomic classes, and the java.util.concurrent framework.
+
+The Java concurrency model is based on a shared-memory multi-threaded architecture governed by the Java Memory Model. The JMM defines how threads interact through memory and guarantees atomicity, visibility, and ordering using happens-before relationships.
+
+Java provides multiple mechanisms to manage concurrency:
+
+synchronized and intrinsic locks for mutual exclusion
+volatile for visibility and ordering guarantees
+Explicit locks like ReentrantLock for advanced control
+Atomic classes using CAS for lock-free concurrency
+High-level utilities like ExecutorService, ConcurrentHashMap, and CompletableFuture
+
+In production systems, I avoid manual thread management and use thread pools with proper sizing and bounded queues. I also prefer minimizing shared mutable state and using immutable objects wherever possible to reduce contention.
+I have handled issues like race conditions and deadlocks by analyzing thread dumps and optimizing lock granularity.
+Overall, Java’s concurrency model provides both low-level and high-level abstractions to build scalable and thread-safe applications.
+
 Q : How do you check if a Thread holds a lock or not?
 
 A : For intrinsic locks, Java provides Thread.holdsLock(Object) to check whether the current thread holds the monitor lock. For explicit locks like ReentrantLock, methods such as isHeldByCurrentThread() and isLocked() are used. For debugging other threads’ lock ownership, tools like ThreadMXBean or jstack are used rather than application code.
