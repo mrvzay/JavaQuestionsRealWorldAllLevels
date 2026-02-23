@@ -15,6 +15,44 @@ Circular Wait - Circular chain of threads waiting for resources.
 
 "No, a traditional deadlock requires at least two threads competing for resources in a circular wait. However, a single thread can effectively deadlock itself through scenarios like calling join() on itself or acquiring a non-reentrant lock twice. In Java, synchronized blocks are reentrant, so the same thread can acquire the same lock multiple times without deadlocking. But with tools like Semaphore or calling Thread.currentThread().join(), a single thread can block itself indefinitely, which is sometimes called a 'self-deadlock.'"
 
+Q : What is executer framework and why do we need it?
+
+A : The Executor Framework is a high-level concurrency API introduced in Java 5 that abstracts thread creation and management. It allows us to submit tasks independently of how threads are created and managed.
+We need it because manually creating threads is expensive, difficult to manage, and not scalable. The Executor Framework provides thread pooling, lifecycle management, task queuing, and resource control.
+Internally, ThreadPoolExecutor manages core threads, maximum threads, a blocking queue, and rejection policies to control load.
+In production systems, I prefer configuring a custom ThreadPoolExecutor with bounded queues to avoid resource exhaustion and improve system stability.
+
+🔹 Real Production Perspective (Very Important)
+As a senior candidate say something like:
+In production systems, I avoid using Executors factory methods like newFixedThreadPool directly because they create unbounded queues. Instead, I prefer creating ThreadPoolExecutor manually with bounded queues to avoid memory issues.
+
+Q : Explain the concept of threadpool?
+
+A : A thread pool is a pool of pre-created worker threads that are reused to execute multiple tasks.
+Instead of creating a new thread for every task, tasks are submitted to a queue and executed by available threads in the pool.
+
+A thread pool is a group of pre-created reusable threads used to execute tasks efficiently. Instead of creating a new thread for every task, tasks are submitted to a queue and executed by available threads in the pool.
+Thread pools improve performance by reducing thread creation overhead and controlling concurrency. They also prevent resource exhaustion by limiting the number of active threads.
+Internally, ThreadPoolExecutor manages core threads, maximum threads, a task queue, and rejection policies to handle overload scenarios.
+In production systems, I configure custom thread pools with bounded queues and proper sizing based on whether tasks are CPU-bound or IO-bound to ensure scalability and stability.
+
+🔹 3️⃣ How Thread Pool Works Internally
+For senior-level answer, explain this clearly.
+When a task is submitted:
+If active threads < core pool size → create new thread
+Else → put task into queue
+If queue full and threads < max pool size → create new thread
+Else → reject task (based on rejection policy)
+This shows you understand ThreadPoolExecutor internals.
+
+Q : How reeantract lock works?
+
+A : ReentrantLock is an explicit locking mechanism built on top of AbstractQueuedSynchronizer (AQS). It provides mutual exclusion similar to synchronized but with more flexibility.
+Internally, it maintains a state variable to track lock ownership. If the lock is free, a thread acquires it using CAS. If it’s already held, other threads are placed in a FIFO queue and parked until the lock becomes available.
+It is reentrant because the same thread can acquire the lock multiple times, and it maintains a hold count.
+It also supports fairness, interruptible locking, tryLock with timeout, and multiple condition variables, making it more powerful than synchronized.
+In high-concurrency systems, I prefer using ReentrantLock when I need advanced features like timed lock acquisition or multiple conditions.
+
 Q : Explain the Java concurrency model.
 
 A : Java concurrency model is based on a shared-memory, multi-threaded architecture governed by the Java Memory Model (JMM).
